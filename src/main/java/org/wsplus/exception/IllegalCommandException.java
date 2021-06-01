@@ -1,4 +1,4 @@
-package exceptions;
+package org.wsplus.exception;
 
 /**
  * @Author zwk

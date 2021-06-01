@@ -1,5 +1,6 @@
-import exceptions.IllegalCommandException;
+package org.wsplus;
 
+import org.wsplus.exception.IllegalCommandException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,8 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketCommandMap {
     private final Map<String, Method> methodMap=new ConcurrentHashMap<>();
     private final Map<Method,Object> methodObjectMap=new ConcurrentHashMap<>();
+    private static final WebSocketCommandMap instance=new WebSocketCommandMap();
     public static WebSocketCommandMap getInstance(){
-        return new WebSocketCommandMap();
+        return instance;
     }
     private WebSocketCommandMap() {
     }

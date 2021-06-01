@@ -1,3 +1,5 @@
+package org.wsplus;
+
 import javax.websocket.Session;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description
  **/
 public class SessionManager {
-    private final Map<String, Session> map=new ConcurrentHashMap<String, Session>();
-    private final ThreadLocal<Session> sessionThreadLocal=new ThreadLocal<Session>();
+    private final Map<String, Session> map=new ConcurrentHashMap<>();
+    private final ThreadLocal<Session> sessionThreadLocal=new ThreadLocal<>();
+    private static final SessionManager manager=new SessionManager();
     private SessionManager(){}
     public static SessionManager getInstance(){
-        return new SessionManager();
+        return manager;
     }
 
     public void put(Session session){
@@ -27,5 +30,8 @@ public class SessionManager {
     }
     public List<Session> getAll(){
         return (List<Session>) this.map.values();
+    }
+    public void setCurrent(Session session){
+        this.sessionThreadLocal.set(session);
     }
 }

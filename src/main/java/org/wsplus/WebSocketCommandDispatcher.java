@@ -1,4 +1,8 @@
+package org.wsplus;
 
+import org.wsplus.annotation.WebSocketCommand;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
@@ -10,6 +14,7 @@ import java.util.Set;
 public class WebSocketCommandDispatcher {
     private Set<Object> webSocketHandlers;
     private final WebSocketHandlerScanner scanner;
+    private final WebSocketCommandResolver resolver=new WebSocketCommandResolver();
     private final WebSocketCommandMap commandMap=WebSocketCommandMap.getInstance();
 
     public WebSocketCommandDispatcher(WebSocketHandlerScanner scanner) {
@@ -28,5 +33,15 @@ public class WebSocketCommandDispatcher {
                 }
             }
         }
+    }
+    public void dispatch(Command command) throws InvocationTargetException, IllegalAccessException {
+        Method method = commandMap.getMethod(command.getPath());
+        method.invoke(
+                commandMap.getObject(method),
+                resolver.resolve(
+                        command,
+                        method.getParameters()
+                )
+        );
     }
 }
